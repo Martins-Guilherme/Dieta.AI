@@ -64,7 +64,9 @@ export default function Nutrition() {
       await Share.share({
         message: message,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   if (isFetching) {
