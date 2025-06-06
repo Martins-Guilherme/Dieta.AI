@@ -31,7 +31,7 @@ export default function Nutrition() {
         }
 
         // const response = await api.get<ResponseData>("/test");
-        const response = await api.post<ResponseData>("/create", {
+        const response = await api.post<ResponseData>("create", {
           name: user.name,
           age: user.age,
           gender: user.gender,
