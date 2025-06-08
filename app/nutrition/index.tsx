@@ -27,10 +27,9 @@ export default function Nutrition() {
     queryFn: async () => {
       try {
         if (!user) {
-          throw new Error("Filed load nutrition");
+          throw new Error("User data not available for nutrition plan.");
         }
 
-        // const response = await api.get<ResponseData>("/test");
         const response = await api.post<ResponseData>("create", {
           name: user.name,
           age: user.age,
@@ -43,16 +42,20 @@ export default function Nutrition() {
 
         return response.data.data;
       } catch (error) {
-        console.log(error);
+        console.error("Error fetching nutrition plan:", error);
+        throw error;
       }
     },
   });
 
   async function handleShare() {
     try {
-      if (data && Object.keys(data).length === 0) return;
+      if (!data || Object.keys(data).length === 0) {
+        return;
+      }
 
-      const supplements = `${data?.suplementos.map((item) => `${item}`)}`;
+      const supplements = data.suplementos.join(", ");
+
       const foods = `${data?.refeicoes.map(
         (item) =>
           `\n- Nome: ${item.nome}\n- Horário: ${
@@ -72,7 +75,7 @@ export default function Nutrition() {
   if (isFetching) {
     return (
       <View style={styles.loading}>
-        <Text style={styles.loadingText}>Estams gerando sua dieta!</Text>
+        <Text style={styles.loadingText}>Gerando sua dieta...</Text>
         <Text style={styles.loadingText}>Consultando IA</Text>
       </View>
     );
